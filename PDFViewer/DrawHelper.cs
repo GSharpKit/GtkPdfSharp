@@ -4,7 +4,7 @@ namespace XMedicus.PDFViewer
     {
         public static void DrawBox (Cairo.Context cr, double x, double y, double w, double h)
         {
-            cr.MoveTo (x, y);
+            //cr.MoveTo (x, y);
             cr.LineTo (x + w, y);
             cr.LineTo (x + w, y + h);
             cr.LineTo (x, y + h);

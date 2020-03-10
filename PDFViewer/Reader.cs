@@ -26,8 +26,9 @@ namespace XMedicus.PDFViewer
 
         FontDescription fontDescription;
         const double fontSize = 10.0;
-
-
+        
+        Tuple<double, double> subpath = new Tuple<double, double>(0d, 0d);
+        Tuple<double, double> current = new Tuple<double, double>(0d, 0d);
 
         public PDFViewer()
         {
@@ -87,9 +88,13 @@ namespace XMedicus.PDFViewer
 
         void Paint(Context cr, double w, double h)
         {
+            subpath = new Tuple<double, double>(0d, 0d);
+            current = new Tuple<double, double>(0d, 0d);
+            
             layout = Pango.CairoHelper.CreateLayout (cr);
 
             cr.LineWidth = 1;
+            cr.SetSourceColor (blackColor);
 
             for (int idx = 0; idx < inputDocument.PageCount; idx++)
             {
@@ -98,7 +103,7 @@ namespace XMedicus.PDFViewer
                 DrawMediaBox(cr, page);
 
                 CObject content = ContentReader.ReadContent(page);
-                DrawText(cr, content);
+                DrawContent(cr, content);
 
                 /*foreach (string s in extractedText)
                 {
@@ -116,13 +121,11 @@ namespace XMedicus.PDFViewer
 
         void DrawMediaBox(Context cr, PdfPage page)
         {
-            cr.SetSourceColor (blackColor);
-            cr.Save ();
+            //cr.Save ();
             DrawHelper.DrawBox(cr, margin + page.MediaBox.X1, margin + page.MediaBox.Y1, page.MediaBox.Width, page.MediaBox.Height);
             cr.Stroke ();
 
-            cr.SetSourceColor (shadowColor);
-            cr.Save ();
+            //cr.Save ();
             DrawHelper.DrawBox(cr, margin + page.MediaBox.X1 + 2, margin + page.MediaBox.Y1 + 2, page.MediaBox.Width, page.MediaBox.Height);
             cr.Stroke ();
         }
@@ -132,24 +135,100 @@ namespace XMedicus.PDFViewer
             inputDocument = PdfReader.Open (filepath, PdfDocumentOpenMode.Import);
         }
 
-        void DrawText(Context cr, CObject cObject)
+        void DrawContent(Context cr, CObject cObject)
         {
             if (cObject is COperator cOperator)
             {
-                Console.WriteLine(cOperator.OpCode.OpCodeName);
                 switch (cOperator.OpCode.OpCodeName)
                 {
                     case OpCodeName.Tj:
                     case OpCodeName.TJ:
                         foreach (var cOperand in cOperator.Operands)
                         {
-                            DrawText(cr, cOperand);
+                            DrawContent(cr, cOperand);
                         }
                         break;
-                    //case OpCodeName.:
-                        //cOperator.
-                      //  break;
+                    case OpCodeName.m:
+                        if (cOperator.Operands.Count == 2)
+                        {
+                            double x = 0d, y = 0d;
+                            if (cOperator.Operands[0] is CReal rx)
+                                x = rx.Value;
+                            if (cOperator.Operands[1] is CReal ry)
+                                y = ry.Value;
+                            
+                            //cr.Save();
+                            cr.MoveTo(current.Item1, current.Item2);
+                            
+                            subpath = current = new Tuple<double, double>(x, y);
+                        }
+                        break;
+                    case OpCodeName.h:
+                        if (subpath.Item1 != 0d && subpath.Item2 != 0d)
+                        {
+                            cr.MoveTo(current.Item1, current.Item2);
+                            cr.LineTo(subpath.Item1, subpath.Item2);
+                        }
+                        subpath = current = new Tuple<double, double>(0, 0);
+                        break;
+                    case OpCodeName.l:
+                        if (cOperator.Operands.Count == 2)
+                        {
+                            double x = 0d, y = 0d;
+                            if (cOperator.Operands[0] is CReal rx)
+                                x = rx.Value;
+                            if (cOperator.Operands[1] is CReal ry)
+                                y = ry.Value;
+                            
+                            //cr.MoveTo(subpath.Item1, subpath.Item2);
+                            cr.LineTo(x, y);
+                            
+                            subpath = new Tuple<double, double>(x, y);
+                        }
+                        break;
+                    case OpCodeName.re:
+                        if (cOperator.Operands.Count == 4)
+                        {
+                            double x = 0d, y = 0d, w = 0d, h = 0d;
+                            if (cOperator.Operands[0] is CReal rx)
+                                x = rx.Value;
+                            if (cOperator.Operands[1] is CReal ry)
+                                y = ry.Value;
+                            if (cOperator.Operands[2] is CReal rw)
+                                w = rw.Value;
+                            if (cOperator.Operands[3] is CReal rh)
+                                h = rh.Value;
+                            
+                            DrawHelper.DrawBox(cr, x, y, w, h);
+                            
+                            subpath = new Tuple<double, double>(x, y);
+                        }
+                        break;
+                    case OpCodeName.S:
+                        cr.Stroke();
+                        
+                        subpath = current = new Tuple<double, double>(0, 0);
+                        break;
+                    case OpCodeName.s:
+                        //cr.MoveTo(current.Item1, current.Item2);
+                        cr.LineTo(subpath.Item1, subpath.Item2);
+                        cr.Stroke();
+
+                        subpath = current = new Tuple<double, double>(0, 0);
+                        break;
+                    case OpCodeName.f:
+                        //cr.Fill();
+                        break;
+                    /*case OpCodeName.scn:
+                        if (cOperator.Operands.Count == 3)
+                        {
+                            double x = 0d, y = 0d, w = 0d, h = 0d;
+                            if (cOperator.Operands[0] is CReal rx)
+                                x = rx.Value;
+                        }
+                        break;*/
                     default:
+                        Console.WriteLine(cOperator.OpCode.OpCodeName);
                         foreach (var cOperand in cOperator.Operands)
                         {
                             if (cOperand is CString cString)
@@ -164,7 +243,7 @@ namespace XMedicus.PDFViewer
             {
                 foreach (var element in cSequence)
                 {
-                    DrawText(cr, element);
+                    DrawContent(cr, element);
                 }
             }
             else if (cObject is CString cString)
@@ -172,13 +251,13 @@ namespace XMedicus.PDFViewer
                 layout.FontDescription = fontDescription;
                 layout.Wrap = Pango.WrapMode.WordChar;
 
-                cr.MoveTo (50, 100 - 8);
+                cr.MoveTo (current.Item1, current.Item2);
                 cr.SetSourceColor (blackColor);
 
                 layout.Width = ((int)(240 * Pango.Scale.PangoScale));
                 layout.SetText (cString.Value);
 
-                Pango.CairoHelper.ShowLayoutLine (cr, layout.Lines [0]);
+                Pango.CairoHelper.ShowLayout(cr, layout);
             }
         }
     }
