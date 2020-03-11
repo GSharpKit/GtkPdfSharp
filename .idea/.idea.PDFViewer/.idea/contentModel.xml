@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
+    <e p="$APPLICATION_CONFIG_DIR$/consoles/db" t="IncludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
     <e p="$USER_HOME$/.Rider2019.3/system/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/.Rider2019.3/system/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_PDFViewer.970993056.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.3/system/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_PDFViewer.-1060976318.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="GtkViewer" t="IncludeRecursive">
         <e p="GtkViewer.cs" t="Include" />
@@ -11,6 +13,9 @@
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
+        <e p="documents" t="Include">
+          <e p="la125.pdf" t="Include" />
+        </e>
         <e p="obj" t="ExcludeRecursive" />
       </e>
       <e p="PDFViewer" t="IncludeRecursive">
