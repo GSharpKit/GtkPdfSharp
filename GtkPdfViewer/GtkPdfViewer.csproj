@@ -8,7 +8,7 @@
 		<OutputType>Exe</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>GtkViewer</RootNamespace>
-		<AssemblyName>GtkViewer</AssemblyName>
+		<AssemblyName>GtkPdfViewer</AssemblyName>
 		<TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
 		<FileAlignment>512</FileAlignment>
 	</PropertyGroup>
@@ -38,7 +38,7 @@
 		<Reference Include="System.Xml" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="GtkViewer.cs" />
+		<Compile Include="GtkPdfViewer.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
@@ -54,13 +54,13 @@
 		<Reference Include="GioSharp, Version=3.22.24.30, Culture=neutral, PublicKeyToken=313398f2149d753f" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\PDFViewer\PDFViewer.csproj">
-	    <Project>{fbf1b394-3c5d-4bf6-880b-2c6b5c0eb23e}</Project>
-	    <Name>PDFViewer</Name>
-	  </ProjectReference>
+	  <Content Include="documents\la125.pdf" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Content Include="documents\la125.pdf" />
+	  <ProjectReference Include="..\GtkPdfSharp\GtkPdfSharp.csproj">
+	    <Project>{fbf1b394-3c5d-4bf6-880b-2c6b5c0eb23e}</Project>
+	    <Name>GtkPdfSharp</Name>
+	  </ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

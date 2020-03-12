@@ -1,26 +1,25 @@
 ﻿using System;
 using System.IO;
-using System.Net.Mime;
 using System.Reflection;
-using GLib;
+using NUnit.Framework;
 using Gtk;
 using XMedicus.PDFViewer;
-using Application = Gtk.Application;
 
-namespace GtkPdfViewer
+namespace Viewer
 {
-    public class Viewer : Application
+    [TestFixture]
+    public class Tests
     {
         static string filebase = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase)?.Replace("file:", string.Empty).Replace("bin" + Path.DirectorySeparatorChar + "Debug", string.Empty);
         static string filepath = filebase + "documents" + Path.DirectorySeparatorChar;
 
         PDFViewer pdf;
 
-        public Viewer() : base("GtkPdfViewer", ApplicationFlags.None)
+        public Tests()
         {
-            Init ();
+            Application.Init ();
 
-            Window window = new Window("PDFViewer")
+            Window window = new Window("GtkPdfSharp")
             {
                 WindowPosition = WindowPosition.Center,
             };
@@ -34,23 +33,26 @@ namespace GtkPdfViewer
 
             window.SetSizeRequest(1280, 1024);
             window.Show();
+        }
 
-            Run();
+        [Test]
+        public void Test1()
+        {
+            pdf.Render(filepath + "la125.pdf");
+
+            Application.Run ();
+
+            Assert.True(true);
         }
 
         void OnRealized(object o, EventArgs args)
         {
-            pdf.Render(filepath + "la125.pdf");
         }
 
         void OnDestroy(object o, EventArgs args)
         {
-            Quit();
-        }
-
-        public static void Main(string[] args)
-        {
-            var app = new Viewer();
+            Console.WriteLine("Hej");
+            Application.Quit();
         }
     }
 }

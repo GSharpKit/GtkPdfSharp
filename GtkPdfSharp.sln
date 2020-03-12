@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFViewer", "PDFViewer\PDFViewer.csproj", "{FBF1B394-3C5D-4BF6-880B-2C6B5C0EB23E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkPdfSharp", "GtkPdfSharp\GtkPdfSharp.csproj", "{FBF1B394-3C5D-4BF6-880B-2C6B5C0EB23E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viewer", "Tests\Viewer\Viewer.csproj", "{B0AED617-95F3-4C9D-8C0B-3797914EA63F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests\Tests.csproj", "{B0AED617-95F3-4C9D-8C0B-3797914EA63F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkViewer", "GtkViewer\GtkViewer.csproj", "{A81DD942-0A81-4764-A363-1E57514F902A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkPdfViewer", "GtkPdfViewer\GtkPdfViewer.csproj", "{A81DD942-0A81-4764-A363-1E57514F902A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

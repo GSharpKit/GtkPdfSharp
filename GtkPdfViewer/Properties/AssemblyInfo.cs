@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PDFViewer")]
+[assembly: AssemblyTitle("GtkPdfViewer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PDFViewer")]
+[assembly: AssemblyProduct("GtkPdfViewer")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("FBF1B394-3C5D-4BF6-880B-2C6B5C0EB23E")]
+[assembly: Guid("A81DD942-0A81-4764-A363-1E57514F902A")]
 
 // Version information for an assembly consists of the following four values:
 //
